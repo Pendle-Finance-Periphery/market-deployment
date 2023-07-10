@@ -72,3 +72,9 @@ export const AMOUNT_TO_SEED = toWei(0.01);
 ```
 yarn hardhat run scripts/seed-liquidity.ts
 ```
+
+## Final notes
+
+We highly recommend you to use a stable RPC with good nonce management for the deployment. Otherwise sending two transactions in a row could result in transaction replacement. 
+
+The current script has already put a delay between any two transactions being sent but sometime it is still not enough on bad RPC.
