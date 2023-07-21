@@ -44,6 +44,13 @@ export async function verifyContract(contract: string, constructor: any[]) {
     }
 }
 
+/**
+ *
+ * @param deployer signer for deployer
+ * @param abiType abi type (contract name)
+ * @param args constructor arguments
+ * @returns the contract itself with specified type
+ */
 export async function deploy<CType extends Contract>(deployer: SignerWithAddress, abiType: string, args: any[]) {
     console.log(`Deploying ${abiType}...`);
     const contractFactory = await hre.ethers.getContractFactory(abiType);
@@ -92,4 +99,3 @@ export async function safeApproveInf(deployer: SignerWithAddress, token: string,
     const allowance = await contract.allowance(deployer.address, to);
     if (allowance.lt(INF.div(2))) await contract.connect(deployer).approve(to, INF);
 }
-

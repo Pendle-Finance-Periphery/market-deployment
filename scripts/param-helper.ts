@@ -1,4 +1,5 @@
-import { toWei } from "./helper";
+import { BigNumber } from 'ethers';
+import { toWei } from './helper';
 
 /**
  * Validates the given start and end timestamps.
@@ -31,7 +32,7 @@ export function calculateParameters(
     rateMax: number,
     startTimestamp: number,
     endTimestamp: number
-): { scalarRoot: BN; initialRateAnchor: BN } {
+): { scalarRoot: BigNumber; initialRateAnchor: BigNumber } {
     validateTimestamps(startTimestamp, endTimestamp);
     const yearsToExpiry = (endTimestamp - startTimestamp) / 31536000;
     const rateMinScaled = Math.pow(rateMin + 1, yearsToExpiry);

@@ -10,15 +10,49 @@ ETHERSCAN_KEY=...
 PRIVATE_KEY=...
 ```
 
-**Note**: `ETHERSCAN_KEY` should match the block explorer key of the network you are deploying. 
+**Note**: `ETHERSCAN_KEY` should match the block explorer key of the network you are deploying.
 
 ## Deployment
 
+### Set up
+
+This repository runs in yarn environment so this step is as simple as running:
+
+```
+yarn install
+```
+
 ### Contract and Parameters preparation
 
+
+#### SY contract
 First step is to get your contract ready inside `./contracts/` folder as we currently have `./contracts/SwETHSY.sol`.
 
-After that, you will have to fill in the parameters for the following parameters corresponding to your interest bearing token:
+Next, you will prepare the deploy implementation for your SY contract in `./scripts/deploy-sy.ts`. Below is an example of SwETHSY deployment.
+
+```ts
+/**
+ * @dev This function aims to deploy your SY contract
+ * @dev The below implementation show how to deploy a SwETH SY contract
+ *
+ * To deploy your own SY contract, you need to:
+ * - Change the contract name / type name in "deploy<YOUR_CONTRACT_NAME>(deployer, 'YOUR_CONTRACT_NAME', [...])"
+ * - Change the deployment params to match your constructor arguments
+ */
+export async function deploySY(deployer: SignerWithAddress): Promise<IStandardizedYield> {
+    const sy = await deploy<SwETHSY>(deployer, 'SwETHSY', [
+        MarketConfiguration.name,
+        MarketConfiguration.symbol,
+        '0xf951E335afb289353dc249e82926178EaC7DEd78', // SWETH address
+    ]);
+
+    return await getContractAt<IStandardizedYield>('IStandardizedYield', sy.address);
+}
+```
+
+#### Parameters
+
+Once you are done with SY deploy implementation, you will have to fill in the parameters for the following parameters corresponding to your interest bearing token:
 ```ts
 /**
  * @dev The following parameters are used to calculate the market deployment params
@@ -88,3 +122,5 @@ yarn hardhat run scripts/seed-liquidity.ts --network <YOUR_NETWORK_NAME>
 We highly recommend you to use a stable RPC with good nonce management for the deployment. Otherwise sending two transactions in a row could result in transaction replacement. 
 
 The current script has already put a delay between any two transactions being sent but sometime it is still not enough on bad RPC.
+
+Please contact us if you run into any problem.

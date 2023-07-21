@@ -804,10 +804,10 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.3.tgz#ff6ee919fc2a1abaf72b22814bfb72ed129ec137"
   integrity sha512-tDBopO1c98Yk7Cv/PZlHqrvtVjlgK5R4J6jxLwoO7qxK4xqOiZG+zSkIvGFpPZ0ikc3QOED3plgdqjgNTnBc7g==
 
-"@pendle/core-v2@^2.21.1":
-  version "2.21.1"
-  resolved "https://registry.yarnpkg.com/@pendle/core-v2/-/core-v2-2.21.1.tgz#ad6ee6ade06be75bdf083e5ee6b40d0cd70252e5"
-  integrity sha512-FwFi5GzT1BK1ehxMmNFVBbJqLJQUEy2UvaBG4elZP1dt96ceKSBBy/7XpO5kl6FwT1/TwEqD292MHE4punVi1A==
+"@pendle/core-v2@^2.22.2":
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/@pendle/core-v2/-/core-v2-2.22.2.tgz#e29ab39d0a1e65ff71021f385ee44ad70449286d"
+  integrity sha512-85Nk2zKqKKpEJChiLmrW5aO3XXf3QJDRpvbyWInFJ7XT3lGck6uZQ7Pa35Mg4yzd/DJHcOtRNfDKFx3HKcb8Wg==
   dependencies:
     "@chainlink/contracts" "^0.6.1"
     "@openzeppelin/contracts" "4.7.3"

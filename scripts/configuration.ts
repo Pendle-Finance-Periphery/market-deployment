@@ -1,12 +1,11 @@
 import { ZERO_ADDRESS } from './consts';
 import { toWei } from './helper';
-import { SUPPORTED_CHAINS } from './types';
-import { calculateParameters } from './param-helper'
+import { calculateParameters } from './param-helper';
 
 /**
  * @dev The following parameters are used to calculate the market deployment params
  * @minApy and @maxApy are the minimum and maximum APY of the interest bearing asset
- * @startTimestamp and @endTimestamp are the start and end time of the market 
+ * @startTimestamp and @endTimestamp are the start and end time of the market
  */
 const minApy = 0.01; // 1%
 const maxApy = 0.05; // 5%

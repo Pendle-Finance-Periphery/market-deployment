@@ -26,15 +26,6 @@ async function main() {
     const YT = await getContractAt<IERC20>('IERC20', marketAddresses.YT);
     const LP = await getContractAt<IERC20>('IERC20', marketAddresses.market);
 
-    // approve inf tokenIns for router
-    await pendleContracts.router.approveInf([
-        {
-            tokens: await SY.getTokensIn(),
-            spender: SY.address,
-        },
-    ]);
-    await delay(SAFE_WAIT_TIME, 'after approveInf on router');
-
     await pendleContracts.router.mintSyFromToken(
         deployer.address,
         SY.address,

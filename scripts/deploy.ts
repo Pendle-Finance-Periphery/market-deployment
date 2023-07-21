@@ -1,11 +1,10 @@
 import { ethers } from 'hardhat';
 import { JSONReplacerBigNum, delay, deploy, getPendleContracts } from './helper';
-import { SwETHSY } from '../typechain-types';
 import { MarketConfiguration } from './configuration';
-import { SUPPORTED_CHAINS } from './types';
 import fs from 'fs';
 import path from 'path';
 import { SAFE_WAIT_TIME } from './consts';
+import { deploySY } from './deploy-sy';
 
 const SWETH = '0xf951E335afb289353dc249e82926178EaC7DEd78';
 
@@ -14,11 +13,7 @@ async function main() {
 
     const pendleContracts = await getPendleContracts();
 
-    const sy = await deploy<SwETHSY>(deployer, 'SwETHSY', [
-        MarketConfiguration.name,
-        MarketConfiguration.symbol,
-        SWETH,
-    ]);
+    const sy = await deploySY(deployer);
 
     await delay(SAFE_WAIT_TIME, 'before deploying PT/YT');
 
@@ -47,6 +42,15 @@ async function main() {
         MarketConfiguration.scalarRoot,
         MarketConfiguration.initialRateAnchor
     );
+    await delay(SAFE_WAIT_TIME, 'after create market');
+
+    // approve inf tokenIns for the path of pendle router -> sy address
+    await pendleContracts.router.approveInf([
+        {
+            tokens: await sy.getTokensIn(),
+            spender: sy.address,
+        },
+    ]);
 
     fs.writeFileSync(
         path.resolve(__dirname, '../deployments', `${MarketConfiguration.symbol}.json`),
