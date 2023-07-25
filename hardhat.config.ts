@@ -22,7 +22,8 @@ const config: HardhatUserConfig = {
           privateKey: PRIVATE_KEY,
           balance: '1000000000000000000000000000000000000'
         }
-      ]
+      ],
+      allowUnlimitedContractSize: false
     },
     mainnet: {
       url: 'https://rpc.ankr.com/eth',

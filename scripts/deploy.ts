@@ -6,8 +6,6 @@ import path from 'path';
 import { SAFE_WAIT_TIME } from './consts';
 import { deploySY } from './deploy-sy';
 
-const SWETH = '0xf951E335afb289353dc249e82926178EaC7DEd78';
-
 async function main() {
     const [deployer] = await ethers.getSigners();
 
