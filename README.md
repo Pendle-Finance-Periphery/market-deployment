@@ -95,6 +95,11 @@ This step is only to ensure your market has minimum liquidity before you can act
 
 ### Parameters preparation
 
+Inside `./scripts/seed-liquidity.ts`, make sure the import in line 6 is point to your according deployment output file, in case of swETH, it should be:
+```ts
+import marketAddresses from '../deployments/SY-swETH.json';
+```
+
 Inside `./scripts/configuration.ts`, please fill in the parameters for these two variables:
 
 ```ts
