@@ -28,17 +28,32 @@ const config: HardhatUserConfig = {
     mainnet: {
       url: 'https://rpc.ankr.com/eth',
       accounts: [PRIVATE_KEY],
-      chainId: 1
+      chainId: 1,
+      gasMultiplier: 1.5
     },
     arbitrum: {
       url: 'https://rpc.ankr.com/arbitrum',
       accounts: [PRIVATE_KEY],
-      chainId: 42161
+      chainId: 42161,
+      gasMultiplier: 1.5
     },
     bsc: {
       url: 'https://rpc.ankr.com/bsc',
       accounts: [PRIVATE_KEY],
-      chainId: 56
+      chainId: 56,
+      gasMultiplier: 1.5
+    },
+    optimism: {
+      url: 'https://rpc.ankr.com/optimism',
+      accounts: [PRIVATE_KEY],
+      chainId: 10,
+      gasMultiplier: 1.5
+    },
+    mantle: {
+      url: 'https://rpc.ankr.com/mantle',
+      accounts: [PRIVATE_KEY],
+      chainId: 5000,
+      gasMultiplier: 1.5
     }
   },
   solidity: {
