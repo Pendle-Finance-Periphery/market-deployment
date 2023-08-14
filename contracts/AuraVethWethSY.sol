@@ -99,19 +99,19 @@ contract AuraWethVethSY is PendleAuraBalancerStableLPSYV2 {
     //  --------------------------------- POOL CONSTANTS ---------------------------------
     function _getPoolTokenAddresses() internal pure override returns (address[] memory res) {
         res = new address[](3);
-        res[0] = LP;
-        res[1] = VETH;
+        res[0] = VETH;
+        res[1] = LP;
         res[2] = WETH;
     }
 
     function _getBPTIndex() internal pure override returns (uint256) {
-        return 0;
+        return 1;
     }
 
     function _getRateProviders() internal pure returns (address[] memory res) {
         res = new address[](3);
-        res[0] = 0x0000000000000000000000000000000000000000;
-        res[1] = 0x12589A727aeFAc3fbE5025F890f1CB97c269BEc2;
+        res[0] = 0x12589A727aeFAc3fbE5025F890f1CB97c269BEc2;
+        res[1] = 0x0000000000000000000000000000000000000000;
         res[2] = 0x0000000000000000000000000000000000000000;
     }
 
