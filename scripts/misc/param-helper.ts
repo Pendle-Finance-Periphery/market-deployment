@@ -34,6 +34,8 @@ export function calculateParameters(
     endTimestamp: number
 ): { scalarRoot: BigNumber; initialRateAnchor: BigNumber } {
     validateTimestamps(startTimestamp, endTimestamp);
+    rateMin /= 100;
+    rateMax /= 100;
     const yearsToExpiry = (endTimestamp - startTimestamp) / 31536000;
     const rateMinScaled = Math.pow(rateMin + 1, yearsToExpiry);
     const rateMaxScaled = Math.pow(rateMax + 1, yearsToExpiry);

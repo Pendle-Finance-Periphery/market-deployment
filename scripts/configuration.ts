@@ -7,8 +7,8 @@ import { calcFee, calculateParameters } from './misc/param-helper';
  * @minApy and @maxApy are the minimum and maximum APY of the interest bearing asset
  * @startTimestamp and @endTimestamp are the start and end time of the market
  */
-const minApy = 0.01; // 1%
-const maxApy = 0.05; // 5%
+const minApy = 1; // 1%
+const maxApy = 5; // 5%
 const fee = 0.1; // 0.1%
 
 const startTimestamp = 1689206400;
