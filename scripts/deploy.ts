@@ -1,9 +1,7 @@
 import { ethers } from 'hardhat';
-import { JSONReplacerBigNum, delay, deploy, getPendleContracts } from './helper';
-import { MarketConfiguration } from './configuration';
-import fs from 'fs';
-import path from 'path';
-import { SAFE_WAIT_TIME } from './consts';
+import { delay, getPendleContracts, safeApprove } from './misc/helper';
+import { AMOUNT_TO_SEED, MarketConfiguration, UNDERLYING_TO_SEED_LIQUIDITY } from './configuration';
+import { SAFE_WAIT_TIME, ZERO_ADDRESS } from './misc/consts';
 import { deploySY } from './deploy-sy';
 
 async function main() {
@@ -12,57 +10,32 @@ async function main() {
     const pendleContracts = await getPendleContracts();
 
     const sy = await deploySY(deployer);
+    await delay(SAFE_WAIT_TIME, 'before deploying pendle pool');
 
-    await delay(SAFE_WAIT_TIME, 'before deploying PT/YT');
+    let overrides = {};
+    if (UNDERLYING_TO_SEED_LIQUIDITY == ZERO_ADDRESS) {
+        overrides = {
+            value: AMOUNT_TO_SEED,
+        };
+    } else {
+        await safeApprove(deployer, UNDERLYING_TO_SEED_LIQUIDITY, pendleContracts.deployHelper.address, AMOUNT_TO_SEED);
+        await delay(SAFE_WAIT_TIME, 'after approve underlying');
+    }
 
-    const [PT, YT] = await pendleContracts.yieldContractFactory.callStatic.createYieldContract(
+    await pendleContracts.deployHelper.deploy5115MarketAndSeedLiquidity(
         sy.address,
-        MarketConfiguration.expiry,
-        MarketConfiguration.doCacheIndex
-    );
-
-    await pendleContracts.yieldContractFactory.createYieldContract(
-        sy.address,
-        MarketConfiguration.expiry,
-        MarketConfiguration.doCacheIndex
-    );
-
-    await delay(SAFE_WAIT_TIME, 'before deploying markets');
-
-    const market = await pendleContracts.marketFactory.callStatic.createNewMarket(
-        PT,
-        MarketConfiguration.scalarRoot,
-        MarketConfiguration.initialRateAnchor
-    );
-
-    await pendleContracts.marketFactory.createNewMarket(
-        PT,
-        MarketConfiguration.scalarRoot,
-        MarketConfiguration.initialRateAnchor
-    );
-    await delay(SAFE_WAIT_TIME, 'after create market');
-
-    // approve inf tokenIns for the path of pendle router -> sy address
-    await pendleContracts.router.approveInf([
         {
-            tokens: await sy.getTokensIn(),
-            spender: sy.address,
+            expiry: MarketConfiguration.expiry,
+            lnFeeRateRoot: MarketConfiguration.fee,
+            scalarRoot: MarketConfiguration.scalarRoot,
+            initialRateAnchor: MarketConfiguration.initialRateAnchor,
+            doCacheIndexSameBlock: MarketConfiguration.doCacheIndex,
         },
-    ]);
-
-    fs.writeFileSync(
-        path.resolve(__dirname, '../deployments', `${MarketConfiguration.symbol}.json`),
-        JSON.stringify(
-            {
-                ...MarketConfiguration,
-                SY: sy.address,
-                PT,
-                YT,
-                market,
-            },
-            JSONReplacerBigNum,
-            4
-        )
+        UNDERLYING_TO_SEED_LIQUIDITY,
+        AMOUNT_TO_SEED,
+        {
+            ...overrides,
+        }
     );
 }
 

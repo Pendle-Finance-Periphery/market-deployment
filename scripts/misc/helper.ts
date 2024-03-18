@@ -5,17 +5,15 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import ethereumConfiguration from '@pendle/core-v2/deployments/1-core.json';
 import arbitrumConfiguration from '@pendle/core-v2/deployments/42161-core.json';
 import bnbConfiguration from '@pendle/core-v2/deployments/56-core.json';
-import mantleConfiguration from '@pendle/core-v2/deployments/5000-core.json';
 import optimismConfiguration from '@pendle/core-v2/deployments/10-core.json';
 
 import { PendleContracts, SUPPORTED_CHAINS } from './types';
 import {
     IERC20,
-    IPAllAction,
-    IPLiquiditySeedingHelper,
-    PendleMarketFactory,
+    PendleMarketFactoryV3,
+    PendlePoolDeployHelper,
     PendleYieldContractFactory,
-} from '../typechain-types';
+} from '../../typechain-types';
 
 export function getNetwork() {
     return {
@@ -23,7 +21,6 @@ export function getNetwork() {
         [56]: SUPPORTED_CHAINS.BSC,
         [42161]: SUPPORTED_CHAINS.ARBITRUM,
         [10]: SUPPORTED_CHAINS.OPTIMISM,
-        [5000]: SUPPORTED_CHAINS.MANTLE,
     }[hre.network.config.chainId!]!;
 }
 
@@ -84,21 +81,16 @@ export async function getPendleContracts(): Promise<PendleContracts> {
         [SUPPORTED_CHAINS.MAINNET]: ethereumConfiguration,
         [SUPPORTED_CHAINS.ARBITRUM]: arbitrumConfiguration,
         [SUPPORTED_CHAINS.BSC]: bnbConfiguration,
-        [SUPPORTED_CHAINS.MANTLE]: mantleConfiguration,
         [SUPPORTED_CHAINS.OPTIMISM]: optimismConfiguration,
     }[getNetwork()];
 
     return {
-        router: await getContractAt<IPAllAction>('IPAllAction', config.router),
-        marketFactory: await getContractAt<PendleMarketFactory>('PendleMarketFactory', config.marketFactory),
+        marketFactory: await getContractAt<PendleMarketFactoryV3>('PendleMarketFactory', config.marketFactory),
         yieldContractFactory: await getContractAt<PendleYieldContractFactory>(
             'PendleYieldContractFactory',
             config.yieldContractFactory
         ),
-        liquiditySeedingHelper: await getContractAt<IPLiquiditySeedingHelper>(
-            'IPLiquiditySeedingHelper',
-            config.liquiditySeedingHelper
-        ),
+        deployHelper: await getContractAt<PendlePoolDeployHelper>('PendlePoolDeployHelper', config.poolDeployHelper),
     };
 }
 

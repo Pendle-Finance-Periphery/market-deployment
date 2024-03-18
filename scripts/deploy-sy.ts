@@ -1,6 +1,6 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { IStandardizedYield, SwETHSY } from '../typechain-types';
-import { deploy, getContractAt } from './helper';
+import { deploy, getContractAt } from './misc/helper';
 import { MarketConfiguration } from './configuration';
 
 /**

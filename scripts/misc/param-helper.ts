@@ -42,3 +42,13 @@ export function calculateParameters(
     const scalarRoot = (Math.log(9) * yearsToExpiry) / rateDiff;
     return { scalarRoot: toWei(scalarRoot), initialRateAnchor: toWei(initialRateAnchor) };
 }
+
+/**
+ *
+ * @param fee the fee in percentage (eg 0.5% = 0.5)
+ * @returns the natural logaritm of 1 + fee in 18 decimal places
+ */
+export function calcFee(fee: number): BigNumber {
+    const feeFloat = Math.log(1 + fee / 100);
+    return BigNumber.from(Math.floor(feeFloat * 10 ** 12)).mul(10 ** 6);
+}

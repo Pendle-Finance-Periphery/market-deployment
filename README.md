@@ -57,10 +57,12 @@ Once you are done with SY deploy implementation, you will have to fill in the pa
 /**
  * @dev The following parameters are used to calculate the market deployment params
  * @minApy and @maxApy are the minimum and maximum APY of the interest bearing asset
- * @startTimestamp and @endTimestamp are the start and end time of the market 
+ * @startTimestamp and @endTimestamp are the start and end time of the market
  */
 const minApy = 0.01; // 1%
 const maxApy = 0.05; // 5%
+const fee = 0.1; // 0.1%
+
 const startTimestamp = 1689206400;
 const endTimestamp = 1750896000;
 
@@ -70,35 +72,13 @@ export const MarketConfiguration = {
     doCacheIndex: true,
     expiry: endTimestamp,
     ...calculateParameters(minApy, maxApy, startTimestamp, endTimestamp),
+    fee: calcFee(fee),
 };
 ```
 
 The remaining three fields in MarketConfiguration are `name`, `symbol` (quite straight-forward) and `doCacheIndex`. For `doCacheIndex`, we usually leave it as `true` for ethereum mainnet deployment and `false` for any other chain to save gas for PT/YT related transactions. 
 
-### Run deployment script
-
-After contracts and parameters are ready, here are the steps to deploy:
-```
-yarn hardhat clean
-yarn hardhat compile
-yarn hardhat run scripts/deploy.ts --network <YOUR_NETWORK_NAME>
-```
-
-The first two commands will ensure that your contract verification runs through without any error.
-
-Once the script is done, you should find your deployment result in `./deployments` folder.
-
-
-## Seed liquidity
-
-This step is only to ensure your market has minimum liquidity before you can actually seed a considerable amount of liquidity on Pendle UI. Please only proceed this step with the amount of liquidity you afford to lose.
-
-### Parameters preparation
-
-Inside `./scripts/seed-liquidity.ts`, make sure the import in line 6 is point to your according deployment output file, in case of swETH, it should be:
-```ts
-import marketAddresses from '../deployments/SY-swETH.json';
-```
+### Liquidity seeding params preparation
 
 Inside `./scripts/configuration.ts`, please fill in the parameters for these two variables:
 
@@ -116,11 +96,18 @@ export const UNDERLYING_TO_SEED_LIQUIDITY = ZERO_ADDRESS;
 export const AMOUNT_TO_SEED = toWei(0.01);
 ```
 
-### Run script
+### Run deployment script
 
+After contracts and parameters are ready, here are the steps to deploy:
 ```
-yarn hardhat run scripts/seed-liquidity.ts --network <YOUR_NETWORK_NAME>
+yarn hardhat clean
+yarn hardhat compile
+yarn hardhat run scripts/deploy.ts --network <YOUR_NETWORK_NAME>
 ```
+
+The first two commands will ensure that your contract verification runs through without any error.
+
+This step also helps you to seed the liquidity, which is only to ensure your market has minimum liquidity before you can actually seed a considerable amount of liquidity on Pendle UI. Please only proceed this step with the amount of liquidity you afford to lose.
 
 ## Final notes
 

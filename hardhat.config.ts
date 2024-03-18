@@ -11,6 +11,9 @@ dotenv.config();
 const PRIVATE_KEY = process.env.PRIVATE_KEY || '0x1111111111111111111111111111111111111111111111111111111111111111';
 
 const config: HardhatUserConfig = {
+  paths: {
+    sources: './contracts',
+  },
   networks: {
     hardhat: {
       chainId: 1,
@@ -59,7 +62,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
         {
-            version: '0.8.17',
+            version: '0.8.23',
             settings: {
                 optimizer: {
                     enabled: true,

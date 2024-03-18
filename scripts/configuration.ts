@@ -1,6 +1,6 @@
-import { ZERO_ADDRESS } from './consts';
-import { toWei } from './helper';
-import { calculateParameters } from './param-helper';
+import { ZERO_ADDRESS } from './misc/consts';
+import { toWei } from './misc/helper';
+import { calcFee, calculateParameters } from './misc/param-helper';
 
 /**
  * @dev The following parameters are used to calculate the market deployment params
@@ -9,6 +9,8 @@ import { calculateParameters } from './param-helper';
  */
 const minApy = 0.01; // 1%
 const maxApy = 0.05; // 5%
+const fee = 0.1; // 0.1%
+
 const startTimestamp = 1689206400;
 const endTimestamp = 1750896000;
 
@@ -18,6 +20,7 @@ export const MarketConfiguration = {
     doCacheIndex: true,
     expiry: endTimestamp,
     ...calculateParameters(minApy, maxApy, startTimestamp, endTimestamp),
+    fee: calcFee(fee),
 };
 
 // address(0) is native
