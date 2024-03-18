@@ -1,6 +1,6 @@
 # Pendle Market Deployer
 
-This repository uses swETH as an example for developing/deploying a SY (EIP-5115) onto Pendle system.
+This repository uses apxETH as an example for developing/deploying a SY (EIP-5115) onto Pendle system.
 
 ## ENV preparation
 
@@ -33,18 +33,26 @@ Next, you will prepare the deploy implementation for your SY contract in `./scri
 ```ts
 /**
  * @dev This function aims to deploy your SY contract
- * @dev The below implementation show how to deploy a SwETH SY contract
+ * @dev The below implementation show how to deploy a apxETH SY contract
  *
  * To deploy your own SY contract, you need to:
  * - Change the contract name / type name in "deploy<YOUR_CONTRACT_NAME>(deployer, 'YOUR_CONTRACT_NAME', [...])"
  * - Change the deployment params to match your constructor arguments
  */
 export async function deploySY(deployer: SignerWithAddress): Promise<IStandardizedYield> {
-    const sy = await deploy<SwETHSY>(deployer, 'SwETHSY', [
-        MarketConfiguration.name,
-        MarketConfiguration.symbol,
-        '0xf951E335afb289353dc249e82926178EaC7DEd78', // SWETH address
+    const sy = await deploy<ApxETHSY>(deployer, 'ApxETHSY', [
+        PIREX_ETH
     ]);
+
+
+    if (hre.network.name !== 'hardhat') {
+        await delay(15000, 'before verifying contract');
+        await hre.run('verify:verify', {
+            address: sy.address,
+            constructorArguments: [PIREX_ETH],
+            contract: 'contracts/ApxETHSY.sol:ApxETHSY',
+        });
+    }
 
     return await getContractAt<IStandardizedYield>('IStandardizedYield', sy.address);
 }
@@ -67,8 +75,8 @@ const startTimestamp = 1689206400;
 const endTimestamp = 1750896000;
 
 export const MarketConfiguration = {
-    name: 'SY swETH',
-    symbol: 'SY-swETH',
+    name: 'SY apxETH',
+    symbol: 'SY-apxETH',
     doCacheIndex: true,
     expiry: endTimestamp,
     ...calculateParameters(minApy, maxApy, startTimestamp, endTimestamp),

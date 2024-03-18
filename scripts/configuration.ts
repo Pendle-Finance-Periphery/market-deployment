@@ -15,8 +15,8 @@ const startTimestamp = 1689206400;
 const endTimestamp = 1750896000;
 
 export const MarketConfiguration = {
-    name: 'SY swETH',
-    symbol: 'SY-swETH',
+    name: 'SY apxETH',
+    symbol: 'SY-apxETH',
     doCacheIndex: true,
     expiry: endTimestamp,
     ...calculateParameters(minApy, maxApy, startTimestamp, endTimestamp),

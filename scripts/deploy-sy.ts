@@ -8,7 +8,7 @@ const PIREX_ETH = '0xD664b74274DfEB538d9baC494F3a4760828B02b0'
 
 /**
  * @dev This function aims to deploy your SY contract
- * @dev The below implementation show how to deploy a SwETH SY contract
+ * @dev The below implementation show how to deploy a APXETH SY contract
  *
  * To deploy your own SY contract, you need to:
  * - Change the contract name / type name in "deploy<YOUR_CONTRACT_NAME>(deployer, 'YOUR_CONTRACT_NAME', [...])"
