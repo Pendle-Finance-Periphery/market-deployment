@@ -64,7 +64,7 @@ export async function deploy<CType extends Contract>(deployer: SignerWithAddress
     await contract.deployed();
     console.log(`[DEPLOYED] ${abiType} / ${(await contract).address}`);
     await delay(15000, 'before verifying contract');
-    await verifyContract(contract.address, args);
+    // await verifyContract(contract.address, args);
     return contract as CType;
 }
 
@@ -85,7 +85,7 @@ export async function getPendleContracts(): Promise<PendleContracts> {
     }[getNetwork()];
 
     return {
-        marketFactory: await getContractAt<PendleMarketFactoryV3>('PendleMarketFactory', config.marketFactory),
+        marketFactory: await getContractAt<PendleMarketFactoryV3>('PendleMarketFactoryV3', config.marketFactory),
         yieldContractFactory: await getContractAt<PendleYieldContractFactory>(
             'PendleYieldContractFactory',
             config.yieldContractFactory
